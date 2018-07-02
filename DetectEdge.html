@@ -1,0 +1,120 @@
+<html>
+
+<head>
+    <style>
+        html,
+        body {
+            font-family: Arial;
+        }
+
+        h2 {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #content {
+            position: absolute;
+            left: 100px;
+            top: 100px;
+        }
+
+        img {
+            margin: 20px;
+        }
+
+        #console {
+            position: absolute;
+            left: 550px;
+            top: 100px;
+            width: 200px;
+            background: #eeeeee;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+            <img src="http://25.media.tumblr.com/tumblr_ln778ig1qC1qeewzyo1_1280.gif" height="30" width="30" />
+            <img src="http://25.media.tumblr.com/tumblr_ln778ig1qC1qeewzyo1_1280.gif" height="30" width="30" />
+            <img src="http://25.media.tumblr.com/tumblr_ln778ig1qC1qeewzyo1_1280.gif" height="30" width="30" />
+            <img src="http://25.media.tumblr.com/tumblr_ln778ig1qC1qeewzyo1_1280.gif" height="30" width="30" />
+            <img src="http://25.media.tumblr.com/tumblr_ln778ig1qC1qeewzyo1_1280.gif" height="30" width="30" />
+    </div>
+
+    <div id="console">
+        <h2>Console</h2>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            var inEdge;
+            $("img").hover(function (e) {
+                console.log(e.currentTarget);
+                var el_pos = $(e.currentTarget).offset();
+                //var edge = closestEdge(e.pageX - el_pos.left, e.pageY - el_pos.top, $(this).width(), $(this).height());
+                inEdge = closestEdge(e.pageX - el_pos.left, e.pageY - el_pos.top, $(this).width(), $(this).height());
+                //log('entered at: ' + edge);
+                if (inEdge == "top") {
+                    $(e.currentTarget).stop().animate({ marginTop: (parseInt($(e.currentTarget).css("marginTop")) + 20) + 'px' }, 300);
+                }
+                else if (inEdge == "bottom") {
+                    $(e.currentTarget).stop().animate({ marginTop: (parseInt($(e.currentTarget).css("marginTop")) - 20) + 'px' }, 300);
+                }
+                else if (inEdge == "left") {
+                    $(e.currentTarget).stop().animate({ marginLeft: (parseInt($(e.currentTarget).css("marginLeft")) + 20) + 'px' }, 300);
+                }
+                else {
+                    $(e.currentTarget).stop().animate({ marginLeft: (parseInt($(e.currentTarget).css("marginLeft")) - 20) + 'px' }, 300);
+                }
+            }, function (e) {
+                var el_pos = $(this).offset();
+                //var edge = closestEdge(e.pageX - el_pos.left, e.pageY - el_pos.top, $(this).width(), $(this).height());
+                //log('left at: ' + edge + '<br><br>');
+                if (inEdge == "top") {
+                    $(e.currentTarget).stop().animate({ marginTop: 20 + 'px' }, 300);
+                }
+                else if (inEdge == "bottom") {
+                    $(e.currentTarget).stop().animate({ marginTop: 20 + 'px' }, 300);
+                }
+                else if (inEdge == "left") {
+                    $(e.currentTarget).stop().animate({ marginLeft: 20 + 'px' }, 300);
+                }
+                else {
+                    $(e.currentTarget).stop().animate({ marginLeft: 20 + 'px' }, 300);
+                }
+            });
+        });
+
+        function closestEdge(x, y, w, h) {
+            var topEdgeDist = distMetric(x, y, w / 2, 0);
+            var bottomEdgeDist = distMetric(x, y, w / 2, h);
+            var leftEdgeDist = distMetric(x, y, 0, h / 2);
+            var rightEdgeDist = distMetric(x, y, w, h / 2);
+
+            var min = Math.min(topEdgeDist, bottomEdgeDist, leftEdgeDist, rightEdgeDist);
+            switch (min) {
+                case leftEdgeDist:
+                    return "left";
+                case rightEdgeDist:
+                    return "right";
+                case topEdgeDist:
+                    return "top";
+                case bottomEdgeDist:
+                    return "bottom";
+            }
+        }
+
+        function log(msg) {
+            $("#console").append("<pre>" + msg + "</pre>");
+        }
+
+        function distMetric(x, y, x2, y2) {
+            var xDiff = x - x2;
+            var yDiff = y - y2;
+            return (xDiff * xDiff) + (yDiff * yDiff);
+        }
+    </script>
+</body>
+
+</html>
